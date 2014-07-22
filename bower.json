@@ -1,0 +1,7 @@
+{
+  "name": "speech-synthesis",
+  "private": true,
+  "dependencies": {
+    "polymer": "Polymer/polymer#master"
+  }
+}

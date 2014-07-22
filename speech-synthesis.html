@@ -1,0 +1,181 @@
+<!--
+Copyright (c) 2014 mui-is Authors. All rights reserved.
+
+-->
+
+<link rel="import" href="../polymer/polymer.html">
+
+<!--
+
+-->
+
+<polymer-element name="speech-synthesis" attributes="voice voiceURI volume rate pitch lang text pending speaking paused onstart onend onerror onpause onresume onmark onboundary autoSpeak">
+  <script>
+  (function() {
+    var messages = {
+      0x1: { type: 'error', name: 'broser does not spport html5 speech synthesis' }
+    }
+
+    Polymer('speech-synthesis', {
+      // protected objects
+      _: null,
+
+      // SpeechSynthesis
+      speaking   : false,
+      paused     : null,
+      pending    : false,
+
+      // SpeechSynthesisUtterance
+      voice      : null,
+      voiceURI   : 'native',
+      volume     : 1,
+      rate       : 1,
+      pitch      : 1,
+      lang       : "",
+      text       : "",
+
+      onend      : function() {},
+      onerror    : function() {},
+      onpause    : function() {},
+      onresume   : function() {},
+      onmark     : function() {},
+      onboundary : function() {},
+
+      // other
+      autoSpeak: false,
+
+      // polymer event methods
+      // ---------------------------------
+
+      ready: function() {
+        // Synthesis support. Make your web apps talk!
+        if ('speechSynthesis' in window) {
+          var _this = this;
+
+          this._ = {
+            ssu: new window.SpeechSynthesisUtterance(),
+            //SpeechSynthesis Attributes
+            ssa: function() {
+              this.triggerEvents = false;
+              _this.speaking = window.speechSynthesis.speaking;
+              _this.paused   = window.speechSynthesis.paused;
+              _this.panding  = window.speechSynthesis.panding;
+              // make sure that polymer watcher exec first
+              _this.job('ssaChecked', function() {
+                this._.triggerEvents = true;
+              }, 50);
+            },
+            // prevent double call - polymer watchers
+            triggerEvents: true
+          };
+
+          // check current SpeechSynthesis state
+          this._.ssa();
+
+          // attach SpeechSynthesisUtterance events
+          this._.ssu.addEventListener('end', function() { _this._.ssa(); return _this.onend.apply(this, arguments); });
+          this._.ssu.addEventListener('error', function() { _this._.ssa(); return _this.onerror.apply(this, arguments); });
+          this._.ssu.addEventListener('pause', function() { _this._.ssa(); return _this.onpause.apply(this, arguments); });
+          this._.ssu.addEventListener('resume', function() { _this._.ssa(); return _this.onresume.apply(this, arguments); });
+          this._.ssu.addEventListener('mark', function() { _this._.ssa(); return _this.onmark.apply(this, arguments); });
+          this._.ssu.addEventListener('boundary', function() { _this._.ssa(); return _this.onboundary.apply(this, arguments); });
+        }
+        else {
+          this.onerror.call(this, message[0x1]);
+        }
+      },
+
+      // attribute watchers
+      // ---------------------------------
+      pausedChanged: function(oval, nval) {
+        // prevent double call if value changes programmatically
+        if ( this._.triggerEvents ) {
+          if ( oval !== null ) {
+            if ( nval ) {
+              window.speechSynthesis.pause();
+            }
+            else if ( nval !== null ) {
+              window.speechSynthesis.resume();
+            }
+          }
+        }
+      },
+      speakingChanged: function(oval, nval) {
+        // prevent double call if value changes programmatically
+        if ( this._.triggerEvents ) {
+          if ( nval ) {
+            window.speechSynthesis.speak(this._.ssu);
+          }
+          else {
+            window.speechSynthesis.cancel();
+          }
+        }
+      },
+
+      volumeChanged: function(oval, nval) {
+        var nval = parseFloat(nval);
+        if ( nval <= 1 ) {
+          this._.ssu.volume = ( nval > 0 ) ? nval : 0;
+        }
+        else {
+          this._.ssu.volume = ( nval < 100 ) ? nval / 100 : 1;
+        }
+      },
+      rateChanged: function(oval, nval) {
+        var nval = parseFloat(nval);
+        this._.ssu.rate = ( nval > 0.1 ) ? ( ( nval < 10 ) ? nval : 10 ) : 0.1;
+      },
+      pitchChanged: function(oval, nval) {
+        var nval = parseFloat(nval);
+        this._.ssu.rate = ( nval > 0 ) ? ( ( nval < 2 ) ? nval : 2 ) : 0;
+      },
+      langChanged: function(oval, nval) {
+        this._.ssu.lang = nval;
+      },
+      voiceURIChanged: function(oval, nval) {
+        this._.ssu.voiceURI = nval;
+      },
+      textChanged: function(oval, nval) {
+        this._.ssu.text = nval;
+
+        if ( this.autoSpeak ) {
+          this.speak();
+        }
+      },
+
+      // voice attribute is not specified in w3c specs.. - https://dvcs.w3.org/hg/speech-api/raw-file/tip/speechapi.html#dfn-utterancetext
+      voiceChanged: function(oval, nval) {
+        if ( typeof nval == 'string' ) {
+          nval = this.getVoices().filter(function(voice) { return voice[ (/^[a-z]{2,2}\-[A-Z]{2,2}$/.test(nval) ? 'lang' : 'name' ) ] == nval; })[0];
+        }
+        else if ( typeof nval == 'number' ) {
+          nval = this.getVoices()[nval];
+        }
+        this._.ssu.voice = nval;
+      },
+
+      // public methods
+      // ---------------------------------
+      getVoices: function() {
+        return window.speechSynthesis.getVoices();
+      },
+      speak: function() {
+        window.speechSynthesis.speak(this._.ssu);
+
+        // check current SpeechSynthesis state
+        this._.ssa();
+      },
+      pause: function() {
+        window.speechSynthesis.pause();
+      },
+      resume: function() {
+        window.speechSynthesis.resume();
+      },
+      cancel: function() {
+        window.speechSynthesis.cancel();
+      }
+    });
+
+  })();
+  </script>
+</polymer-element>

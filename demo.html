@@ -1,0 +1,27 @@
+<!doctype html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+  <title>speech-synthesis</title>
+
+  <script src="../platform/platform.js"></script>
+
+  <link href="speech-synthesis.html" rel="import">
+
+  <style>
+
+  body {
+
+  }
+
+  </style>
+
+</head>
+<body unresolved>
+  <speech-synthesis text="Hi there! How are you today?" autoSpeak="true"></speech-synthesis>
+
+  <input value="{{speak}}"><button onclick="document.getElementById('ss').play()">
+  <speech-synthesis id="ss" text="{{speak}}"></speech-synthesis>
+</body>
+</html>
