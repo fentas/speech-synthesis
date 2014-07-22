@@ -19,9 +19,9 @@
 
 </head>
 <body unresolved>
-  <speech-synthesis text="Hi there! How are you today?" autoSpeak="true"></speech-synthesis>
 
-  <input value="{{speak}}"><button onclick="document.getElementById('ss').play()">
-  <speech-synthesis id="ss" text="{{speak}}"></speech-synthesis>
+  <input onblur="document.querySelector('#ss').text = this.value;" value="Blur me to speek this text!" style="width: 200px; padding: 5px; margin: 2px;">
+  <speech-synthesis id="ss" text="Hi there! How are you today?" autoSpeak="true"></speech-synthesis>
+
 </body>
 </html>
