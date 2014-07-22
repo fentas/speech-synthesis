@@ -12,8 +12,9 @@ bower install mui-is/speech-synthesis
 ```
 
 ## Usage
+More detailed information will follow. (Bare with me)
 
-### Events
+#### Events
 * onstart
 * onend
 * onerror
@@ -22,7 +23,7 @@ bower install mui-is/speech-synthesis
 * onmark
 * onboundary
 
-### Attributes
+#### Attributes
 * voice
 * voiceURI
 * volume
@@ -32,13 +33,13 @@ bower install mui-is/speech-synthesis
 * text
 * autoSpeak
 
-### Current status
+#### Current status
 E.g. `speaking` tells you if it's currently `speaking` but also you can set `speaking = true` it will start reading.
 * pending
 * speaking
 * paused
 
-### Methods
+#### Methods
 * speak()
 * pause()
 * resume()
@@ -46,7 +47,7 @@ E.g. `speaking` tells you if it's currently `speaking` but also you can set `spe
 * getVoices()
 
 
-### Current browser support
+## Current browser support
 http://caniuse.com/#search=speechSynthesis
 
 ## For more information
