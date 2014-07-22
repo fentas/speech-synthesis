@@ -14,6 +14,12 @@ bower install mui-is/speech-synthesis
 ## Usage
 More detailed information will follow. (Bare with me)
 
+One example:
+```html
+<link href="path/to/speech-synthesis.html" rel="import">
+<speech-synthesis id="ss" text="Hi there! How are you today?" autoSpeak="true"></speech-synthesis>
+```
+
 #### Events
 * onstart
 * onend
