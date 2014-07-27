@@ -61,3 +61,16 @@ https://dvcs.w3.org/hg/speech-api/raw-file/tip/speechapi.html#tts-section
 http://updates.html5rocks.com/2014/01/Web-apps-that-talk---Introduction-to-the-Speech-Synthesis-API
 
 http://www.polymer-project.org/
+
+## Donations
+Please help me to finance my every cup of tea. Every coin is appreciated.
+
+```
+Sick of tea? That’s like being sick of *breathing*! - Uncle Iroh
+```
+
+[`197EypPopXtDPFK6rEbCw6XDEaxjTKP58S` -- bitcoin](http://en.wikipedia.org/wiki/Bitcoin)
+
+[`jan.guth@gmail.com` -- paypal](https://www.paypal.com/us/webapps/mpp/home)
+
+[Or just `flattr`  me.](https://flattr.com/submit/auto?user_id=jguth&url=https://github.com/fentas)
